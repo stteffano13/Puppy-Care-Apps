@@ -1,0 +1,44 @@
+.getstar {
+    display: block;
+    margin: 0 auto;
+    width: 100%; //height: auto;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#A1 {
+    margin-left: 3%;
+}
+
+#imganeTitulo {
+    display: block;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    width: 70%;
+    height: auto;
+}
+
+input[placeholder] {
+    color: #020202;
+}
+
+#nuestroinput
+{
+display: none
+}
+
+#Titulo{
+    text-align: center;
+   font-size: large;
+   font: small-caps 100%/200% cursive;
+    font-weight: bold;
+    display: block;
+    margin: 0 auto;
+    right: 0;
+    left: 0;
+    height: auto;
+    margin-top: 5%;
+    
+  }
+  

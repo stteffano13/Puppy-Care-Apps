@@ -1,0 +1,229 @@
+<div *ngIf="cabecera">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="row" style="height:40px">
+            Ingrese la fecha de consulta
+          </div>
+          <div class="row" style="height:40px">
+            Seleccione un paseador
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-12">
+              <my-date-picker required placeholder="Fecha de Búsqueda" [options]="myDatePickerOptions" name="mydate"
+                #mydate="ngModel" [(ngModel)]="fecha_salida" (dateChanged)="onDateChanged($event)" required></my-date-picker>
+            </div>
+          </div>
+          <div class="row">
+            <select style="margin-left: 15px " class="form-control" id="exampleFormControlSelect1" (change)="mostrarDatosConductor($event.target.value)">
+              <option disabled="true">Seleccione un paseador</option>
+              <option *ngFor=" let listadoC of  listadoChoferes" value="{{listadoC._id}}">{{listadoC.nombre}}
+                {{listadoC.apellido}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="row" style="display: flex; justify-content: center; align-items: center;"><input class="btn btn-success"
+              type="button" value="Consultar" (click)="verFechaViajes()" style="width:75%;"></div>
+          <div class="row" style="display: flex; justify-content: center; align-items: center; text-align: center;">
+            <font size="2">*Para visualizar un reporte específico ingresar la fecha y trabajador y dar clic en el botón
+              superior</font>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+<br>
+<div *ngIf="verListadoFecha">
+  <div class="row" *ngIf="lstViajes">
+    <div class="col-md-12" style="text-align: center; color: #2863a9">
+      <h2>PASEOS REALIZADOS EL {{fecha_salida.formatted}}
+      </h2>
+    </div>
+    <div class="col-md-12">
+      <hr style="background-color: #e9ecef; width: 50%;">
+    </div>
+  </div>
+
+  <table class="table  text-center" *ngIf="lstViajes">
+    <thead>
+      <tr style="background-color: #2863a9; align-content: center">
+        <!-- <th style="color: white" scope="col">#</th> -->
+        <th style="color: white" scope="col">Cliente</th>
+        <th style="color: white" scope="col">Mascota-Raza</th>
+        <th style="color: white" scope="col">Fecha</th>
+        <th style="color: white" scope="col">Horario de Recogida</th>
+        <th style="color: white" scope="col">Horario de Entrega</th>
+        <th style="color: white" scope="col">Forma de Pago</th>
+        <th style="color: white" scope="col">Monto</th>
+        <th style="color: white" scope="col">Denuncias</th>
+        <th style="color: white" scope="col">Opción</th>
+      </tr>
+    </thead>
+    <tbody *ngFor=" let listado of  messages; let i = index">
+      <tr *ngIf="listado._id_chofer._id == _idConductor && listado.fech_salida == _fecha">
+        <!-- <td style="font-size: 130%">{{i+1}}</td> -->
+        <td style="font-size: 130%">{{listado.receiver.nombre}} {{ listado.receiver.apellido}}</td>
+        <td style="font-size: 130%">{{listado.raza}}</td>
+        <td style="font-size: 130%">{{listado.fech_salida}}</td>
+        <td style="font-size: 130%">{{ listado.horarioR}}</td>
+        <td style="font-size: 130%">{{ listado.horarioE}}</td>
+     
+        <td style="font-size: 130%">{{listado.tipoPago}}</td>
+        <td style="font-size: 130%">{{ listado.precio}}$</td>
+        <td style="font-size: 130%">{{ listado.denuncia}}</td>
+        <td>
+          <input class="btn btn-success" type="button" value="Ver Más..." (click)="mostrarNotificacion(listado)">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ********************************************** ENCOMIENDAS -->
+  <div class="row" *ngIf="lstEncomiendas">
+    <div class="col-md-12" style="text-align: center; color: #2863a9">
+      <h2>ENCOMIENDAS REALIZADAS EL {{fecha_salida.formatted}}
+      </h2>
+    </div>
+    <div class="col-md-12">
+      <hr style="background-color: #e9ecef; width: 50%;">
+    </div>
+  </div>
+
+  <table class="table  text-center" *ngIf="lstEncomiendas">
+    <thead>
+      <tr style="background-color: #2863a9; align-content: center">
+        <!-- <th style="color: white" scope="col">#</th> -->
+        <th style="color: white" scope="col">Ruta</th>
+        <th style="color: white" scope="col">Fecha</th>
+        <th style="color: white" scope="col">Horario</th>
+        <th style="color: white" scope="col">Cedula</th>
+        <th style="color: white" scope="col">Nombres</th>
+        <th style="color: white" scope="col">Forma de Pago</th>
+        <th style="color: white" scope="col">Opción</th>
+      </tr>
+    </thead>
+    <tbody *ngFor=" let listado of  messagesE; let i = index">
+      <tr *ngIf="listado._id_chofer._id == _idConductor && listado.fech_salida == _fecha">
+        <!-- <td style="font-size: 130%">{{i+1}}</td> -->
+        <td style="font-size: 130%">{{listado.ruta}}</td>
+        <td style="font-size: 130%">{{listado.fech_salida}}</td>
+        <td style="font-size: 130%">{{ listado.horario}}</td>
+        <td style="font-size: 130%">{{listado.receiver.cedula}}</td>
+        <td style="font-size: 130%">{{listado.receiver.nombre}} {{ listado.receiver.apellido}}</td>
+        <td style="font-size: 130%">{{listado.tipoPago}}</td>
+        <td>
+          <input class="btn btn-success" type="button" value="Ver Más..." (click)="mostrarNotificacionEncomienda(listado)">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- ********************************************** ENCOMIENDAS -->
+  <div class="row">
+    <div class="col-md-12">
+      <hr style="background-color: #e9ecef; width: 50%;">
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="card text-center">
+      <div class="card-header">
+        <h5>Reporte del paseador {{nombreChoferMostr}} en la fecha {{fecha_salida.formatted}}</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-5">
+           
+       
+            <div class="row">
+              <font size="2">
+                <br>
+                **Los valores de la forma de pago online no se ha tomado en cuenta para la contabilidad</font>
+            
+              <br>
+            </div>
+          </div>
+
+          <div class="col-md-2">
+            <img src="../assets/img/barraHorizontal.jpg" style="width: 2px; height: 100px; display: block; margin-left: 50%; border-radius: 3px 3px 3px 3px;">
+          </div>
+
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col txt_titulos">
+                Paseos por pagar:
+              </div>
+              <div class="col txt_subtitulos">
+                {{totalCarrChofer}}
+              </div>
+            </div>
+
+           
+
+           
+
+            <div class="row">
+              <hr style="background-color: #e9ecef; width: 100%;">
+            </div>
+
+            <div class="row">
+              <div class="col txt_titulos">
+                <em>TOTAL:</em>
+              </div>
+              <div class="col txt_subtitulos" style="font-weight: bold;">
+                <em>{{totalPagar}} $</em>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-muted">
+        <h6>"DOGI"  nada mejor que un paseo entre amigos</h6>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="viajesRealizadosDetalles">
+  <div>
+    <app-detalles-viajes-realizados></app-detalles-viajes-realizados>
+  </div>
+</div>
+
+
+
+<div *ngIf="mensajeError">
+  <div class="alert alert-warning" role="alert">
+    <p class="text-center">No existen datos de paseos de ese paseador en esa fecha. Ingrese otro paseador u otra
+      fecha y de clic en el botón consultar.</p>
+  </div>
+</div>
+
+<!-- ====================================================                     ERROR =================================-->
+<!-- ====================================================                     ERROR =================================-->
+<button id="openModalError" [hidden]="true" data-toggle="modal" data-target="#ModalError">ALERTA</button>
+<div class="modal fade" id="ModalError" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ALERTA</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input style="width: 100%; border: 0; background-color: white;" disabled type="text" #MensajeError="ngModel"
+          [(ngModel)]="this.mensajeerrormodals1" name="mensajeerror">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" type="button" data-dismiss="modal">Entendido</button>
+      </div>
+    </div>
+  </div>
+</div>
